@@ -9,8 +9,8 @@ function __autoload($className)
 
 $mapProjection = new \Map\Projection();
 
-$mapWidth   = 2400;
-$mapHeight  = 2400;
+$mapWidth   = 1200;
+$mapHeight  = 1200;
 $mapFile = '../resources/Normal_Mercator_map_85deg.jpg';
 
 $coords = array
