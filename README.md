@@ -15,3 +15,7 @@ $mapProjection = new \Map\Projection();
 $pixelCoordinates = $mapProjection->convert( $latitude, $longitude, $mapWidth, $mapHeight );
 ```
 
+Example file tests/drawPointsOnMap.php requires
+
+- php-gd
+- php-image-text
