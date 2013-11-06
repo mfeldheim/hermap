@@ -10,8 +10,8 @@ convert lat/lng to pixels on a map
 
 **Usage**
 
-`
-$mapProjection = new \Map\Projection();
-$pixelCoordinates = $mapProjection->convert( $latitude, $longitude, $mapWidth, $mapHeight );
-`
+
+`$mapProjection = new \Map\Projection();`
+`$pixelCoordinates = $mapProjection->convert( $latitude, $longitude, $mapWidth, $mapHeight );`
+
 
