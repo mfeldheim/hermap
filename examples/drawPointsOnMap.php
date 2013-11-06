@@ -46,7 +46,7 @@ $red = imagecolorallocate( $image, 255, 0, 0 );
 $white = imagecolorallocate( $image, 255, 255, 255 );
 
 foreach( $coords as $city => $coord ) {
-    $res = $mapProjection->convert( $coord[0], $coord[1], $mapWidth, $mapHeight );
+    $res = $mapProjection->degreesToPixels( $coord[0], $coord[1], $mapWidth, $mapHeight );
     imagefilledellipse( $image, $res['x'], $res['y'], 10, 10, $red );
     if ( function_exists( 'imagefttext' ) ) {
         imagefttext( $image, 20, 0, $res['x']+15,$res['y'], $white, './resources/FineAgain.ttf', $city );

@@ -6,13 +6,13 @@ stuff related to maps
 Class \Map\Projection
 ---------------------
 
-convert lat/lng to pixels on a map
+degreesToPixels lat/lng to pixels on a map
 
 **Usage**
 
 ```
 $mapProjection = new \Map\Projection();
-$pixelCoordinates = $mapProjection->convert( $latitude, $longitude, $mapWidth, $mapHeight );
+$pixelCoordinates = $mapProjection->degreesToPixels( $latitude, $longitude, $mapWidth, $mapHeight );
 ```
 
 Example file examples/drawPointsOnMap.php
