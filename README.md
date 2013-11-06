@@ -15,7 +15,8 @@ $mapProjection = new \Map\Projection();
 $pixelCoordinates = $mapProjection->convert( $latitude, $longitude, $mapWidth, $mapHeight );
 ```
 
-**Example file examples/drawPointsOnMap.php**
+Example file examples/drawPointsOnMap.php
+-----------------------------------------
 
 ```
 # composer install
