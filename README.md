@@ -14,8 +14,14 @@ convert lat/lng to pixels on a map
 $mapProjection = new \Map\Projection();
 $pixelCoordinates = $mapProjection->convert( $latitude, $longitude, $mapWidth, $mapHeight );
 ```
+**Example file examples/drawPointsOnMap.php"
 
-Example file tests/drawPointsOnMap.php requires
+```
+# composer install
+php drawPointsOnMap.php
+```
 
-- php-gd
-- php-image-text
+**requires**
+
+- php >= 5.3.2
+- php-gd (optionally compiled with freetype support)
