@@ -10,7 +10,7 @@ echo '----------------------' . PHP_EOL;
 require './vendor/autoload.php';
 
 $loader = new \Composer\Autoload\ClassLoader();
-$loader->add('Map', array('./src', './tests'));
+$loader->add('Geo', array('./src', './tests'));
 $loader->register();
 
 echo PHP_EOL . 'INCLUDE PATH:' . PHP_EOL;

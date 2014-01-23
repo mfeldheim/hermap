@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2013 Michel Feldheim
+ *  Copyright 2014 Michel Feldheim
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  *  language governing permissions and limitations under the License.
  */
 
-namespace Map;
+namespace Geo;
 
 class Projection
 {
