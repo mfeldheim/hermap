@@ -39,12 +39,14 @@ interface PluginInterface
     public function getRoad();
     public function getSuburb();
     public function getCityDistrict();
+    public function getHamlet();
     public function getCounty();
     public function getStateDistrict();
     public function getState();
     public function getZip();
     public function getCountry();
     public function getCountryCode();
+    public function getContinent();
     public function getTimezone();
     public function getAreaCode();
     public function getAirport();

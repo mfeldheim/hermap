@@ -3,11 +3,21 @@ namespace Geo\Coder\Plugin;
 
 use Geo\Coder\Exception;
 use Geo\Coder\PluginInterface;
+use Geo\Coder;
 use Guzzle\Http\Client;
 
 class Nominatim implements PluginInterface
 {
     private $_config = array();
+    private $_result = false;
+
+    private $_params = array(
+        'accept-language' => 'en',
+        'format' => 'json',
+        'q' => null,
+        'limit' => 1,
+        'addressdetails' => 1
+    );
 
     public function __construct($config) {
         $this->_config = $config;
@@ -15,111 +25,196 @@ class Nominatim implements PluginInterface
         if ( !array_key_exists( 'requestURI', $this->_config ) ) {
             throw new Exception( 'Nominatim plugin requires a requestURI config parameter' );
         }
+
+        if ( array_key_exists( 'i118n', $config ) ) {
+            $this->_params['accept-language'] = $config['i118n'];
+        }
     }
 
     public function getId()
     {
-        // TODO: Implement getId() method.
+        return $this->_result ? intval( $this->_result['osm_id'] ) : false;
     }
 
     public function getPlaceId()
     {
-        // TODO: Implement getPlaceId() method.
+        return $this->_result ? intval( $this->_result['place_id'] ) : false;
     }
 
     public function getLat()
     {
-        // TODO: Implement getLat() method.
+        return $this->_result ? round( $this->_result['lat'], 8 ) : false;
     }
 
     public function getLon()
     {
-        // TODO: Implement getLon() method.
+        return $this->_result ? round( $this->_result['lon'], 8 ) : false;
     }
 
     public function getBoundingBox()
     {
-        // TODO: Implement getBoundingBox() method.
+        return $this->_result ? array(
+            'north' => round( $this->_result['boundingbox'][0], 8 ),
+            'south' => round( $this->_result['boundingbox'][1], 8 ),
+            'east' => round( $this->_result['boundingbox'][2], 8 ),
+            'west' => round( $this->_result['boundingbox'][3], 8 )
+        ) : false;
     }
 
+    /**
+     * @todo: implement geo types
+     * @return bool
+     */
     public function getType()
     {
-        // TODO: Implement getType() method.
+        if ( !$this->_result ) {
+            return false;
+        }
+
+        return false;
     }
 
+    /**
+     * @todo implement geo classes
+     */
     public function getClass()
     {
-        // TODO: Implement getClass() method.
+        if ( !$this->_result ) {
+            return false;
+        }
+
+        return false;
     }
 
+    /**
+     * @todo implement precision
+     * @return int
+     */
     public function getPrecision()
     {
-        // TODO: Implement getPrecision() method.
+        if ( !$this->_result or !array_key_exists( 'house_number', $this->_result['address'] )) {
+            return Coder::PRECISION_NONE;
+        }
+        return Coder::PRECISION_HIGH;
     }
 
     public function getHouse()
     {
-        // TODO: Implement getHouse() method.
+        if ( !$this->_result or !array_key_exists( 'house_number', $this->_result['address'] )) {
+            return false;
+        }
+        return $this->_result['address']['house_number'];
     }
 
     public function getRoad()
     {
-        // TODO: Implement getRoad() method.
+        if ( !$this->_result or !array_key_exists( 'road', $this->_result['address'] )) {
+            return false;
+        }
+        return $this->_result['address']['road'];
     }
 
     public function getSuburb()
     {
-        // TODO: Implement getSuburb() method.
+        if ( !$this->_result or !array_key_exists( 'suburb', $this->_result['address'] )) {
+            return false;
+        }
+        return $this->_result['address']['suburb'];
     }
 
     public function getCityDistrict()
     {
-        // TODO: Implement getCityDistrict() method.
+        if ( !$this->_result or !array_key_exists( 'city_district', $this->_result['address'] )) {
+            return false;
+        }
+
+        return preg_replace( '/.*[\d]+ /', '', $this->_result['address']['city_district'] );
+    }
+
+    public function getHamlet()
+    {
+        if ( !$this->_result or !array_key_exists( 'hamlet', $this->_result['address'] )) {
+            return false;
+        }
+
+        return $this->_result['address']['hamlet'];
     }
 
     public function getCounty()
     {
-        // TODO: Implement getCounty() method.
+        if ( !$this->_result or !array_key_exists( 'county', $this->_result['address'] )) {
+            return false;
+        }
+
+        return $this->_result['address']['county'];
     }
 
     public function getStateDistrict()
     {
-        // TODO: Implement getStateDistrict() method.
+        if ( !$this->_result or !array_key_exists( 'state_district', $this->_result['address'] )) {
+            return false;
+        }
+
+        return $this->_result['address']['state_district'];
     }
 
     public function getState()
     {
-        // TODO: Implement getState() method.
+        if ( !$this->_result or !array_key_exists( 'state', $this->_result['address'] )) {
+            return false;
+        }
+
+        return $this->_result['address']['state'];
     }
 
     public function getZip()
     {
-        // TODO: Implement getZip() method.
+        if ( !$this->_result or !array_key_exists( 'postcode', $this->_result['address'] )) {
+            return false;
+        }
+
+        return $this->_result['address']['postcode'];
     }
 
     public function getCountry()
     {
-        // TODO: Implement getCountry() method.
+        if ( !$this->_result or !array_key_exists( 'country', $this->_result['address'] )) {
+            return false;
+        }
+
+        return $this->_result['address']['country'];
     }
 
     public function getCountryCode()
     {
-        // TODO: Implement getCountryCode() method.
+        if ( !$this->_result or !array_key_exists( 'country_code', $this->_result['address'] )) {
+            return false;
+        }
+        return strtoupper( $this->_result['address']['country_code'] );
+    }
+
+    public function getContinent()
+    {
+        if ( !$this->_result or !array_key_exists( 'continent', $this->_result['address'] )) {
+            return false;
+        }
+
+        return $this->_result['address']['continent'];
     }
 
     public function getTimezone()
     {
-        // TODO: Implement getTimezone() method.
+        return false;
     }
 
     public function getAreaCode()
     {
-        // TODO: Implement getAreaCode() method.
+        return false;
     }
 
     public function getAirport()
     {
-        // TODO: Implement getAirport() method.
+        return false;
     }
 
     /**
@@ -134,10 +229,11 @@ class Nominatim implements PluginInterface
 
         $client = new Client();
         $request = $client->createRequest( 'GET',  $this->_config['requestURI'] );
-        $request->getQuery()
-            ->set( 'q', $address )
-            ->set( 'addressdetails', 1 )
-            ->set( 'format', 'json' );
+
+        $this->_params['q'] = trim( $address );
+        foreach( $this->_params as $key => $param ) {
+            $request->getQuery()->set( $key, $param );
+        }
 
         $response = $request->send();
 
@@ -145,8 +241,12 @@ class Nominatim implements PluginInterface
             return false;
         }
 
-        $this->_result = $response->json();
-        print_r( $this->_result );
+        $result = $response->json();
+
+        if ( !is_array( $result ) || !sizeof( $result ) ) {
+            return false;
+        }
+        $this->_result = $result[0];
         return true;
     }
 }
