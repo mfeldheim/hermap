@@ -1,10 +1,22 @@
 <?php
 namespace Geo\Coder\Plugin;
 
+use Geo\Coder\Exception;
 use Geo\Coder\PluginInterface;
+use Guzzle\Http\Client;
 
 class Nominatim implements PluginInterface
 {
+    private $_config = array();
+
+    public function __construct($config) {
+        $this->_config = $config;
+
+        if ( !array_key_exists( 'requestURI', $this->_config ) ) {
+            throw new Exception( 'Nominatim plugin requires a requestURI config parameter' );
+        }
+    }
+
     public function getId()
     {
         // TODO: Implement getId() method.
@@ -111,11 +123,30 @@ class Nominatim implements PluginInterface
     }
 
     /**
-     * @param $addr
+     * @param $address
      * @return bool
      */
-    public function fetchCoords($addr)
+    public function fetchCoords($address)
     {
-        // TODO: Implement fetchCoords() method.
+        if ( null === trim( $address ) ) {
+            return false;
+        }
+
+        $client = new Client();
+        $request = $client->createRequest( 'GET',  $this->_config['requestURI'] );
+        $request->getQuery()
+            ->set( 'q', $address )
+            ->set( 'addressdetails', 1 )
+            ->set( 'format', 'json' );
+
+        $response = $request->send();
+
+        if ( $response->getStatusCode() !== 200 ) {
+            return false;
+        }
+
+        $this->_result = $response->json();
+        print_r( $this->_result );
+        return true;
     }
 }
