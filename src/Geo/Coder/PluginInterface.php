@@ -52,8 +52,8 @@ interface PluginInterface
     public function getAirport();
 
     /**
-     * @param $addr
+     * @param $address
      * @return mixed
      */
-    public function fetchCoords( $addr );
+    public function fetchCoords($address);
 }
