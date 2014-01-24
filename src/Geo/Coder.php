@@ -64,5 +64,6 @@ class Coder
                 return $plugin;
             }
         }
+        return false;
     }
 }
