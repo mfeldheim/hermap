@@ -1,6 +1,7 @@
 {
     "name": "mfeldheim/hermap",
     "description": "Stuff related to maps",
+    "version": "1.1.0",
     "require": {
         "php": ">=5.3.2",
         "guzzle/http": ">=3.7.0,<3.9.0",
