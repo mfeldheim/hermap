@@ -8,7 +8,8 @@
     },
     "require-dev": {
         "ext-gd": "*",
-        "phpunit/phpunit": "3.7.37
+        "phpunit/phpunit": "3.7.37"
+    },
     "license": "Apache License Version 2.0",
     "authors": [
         {
