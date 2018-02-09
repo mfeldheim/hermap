@@ -17,7 +17,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$mapProjection = new \Map\Projection();
+$mapProjection = new \Geo\Projection();
 
 $mapWidth   = 1200;
 $mapHeight  = 1200;
