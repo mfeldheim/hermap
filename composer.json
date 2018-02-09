@@ -10,14 +10,14 @@
         "ext-gd": "*",
         "phpunit/phpunit": "3.7.37"
     },
-    "license": "Apache License Version 2.0",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "Michel Feldheim",
             "email": "mfeldheim@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "autoload": {
         "psr-0": {
             "Geo": "src/"
