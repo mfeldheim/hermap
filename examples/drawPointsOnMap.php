@@ -45,19 +45,26 @@ $image = imagecreatefromjpeg( $mapFile );
 $red = imagecolorallocate( $image, 255, 0, 0 );
 $white = imagecolorallocate( $image, 255, 255, 255 );
 
+$isCli = (PHP_SAPI === 'cli');
+
 foreach ($coords as $city => $coord) {
     $res = $mapProjection->degreesToPixels( $coord[0], $coord[1], $mapWidth, $mapHeight );
+
+    if ($isCli) {
+        echo "Drawing {$city} - {$coord[0]},${coord[1]} @ {$res['x']},{$res['y']}px\n";
+    }
+
     imagefilledellipse( $image, $res['x'], $res['y'], 10, 10, $red );
     if ( function_exists( 'imagefttext' ) ) {
         imagefttext( $image, 20, 0, $res['x']+15,$res['y'], $white, './resources/FineAgain.ttf', $city );
     }
 }
 
-if (PHP_SAPI !== 'cli') {
-    header( 'Content-Type: image/png' );
-    imagepng( $image );
-} else {
+if ($isCli) {
     $outfile = './resources/result_' . time() . '.png';
     imagepng( $image, $outfile );
     echo "file saved to {$outfile}\n";
+} else {
+    header( 'Content-Type: image/png' );
+    imagepng( $image );
 }
