@@ -42,7 +42,7 @@ degreesToPixels lat/lng to pixels on a map
 **Usage**
 
 ```
-$mapProjection = new \Map\Projection();
+$mapProjection = new \Geo\Projection();
 $pixelCoordinates = $mapProjection->degreesToPixels( $latitude, $longitude, $mapWidth, $mapHeight );
 ```
 
